@@ -89,57 +89,83 @@ int teste(int a)
     Não utilizar funções próprias de string (ex: strtok)   
     pode utilizar strlen para pegar o tamanho da string
  */
-int q1(char data[])
-{
-    typedef struct {
-        int dia;
-        int mes; 
-        int ano;
-    } Data;
-    
-    int i, j;
+int q1(char data[]) {
+
+    int i = 0, j = 0;
     int datavalida = 1;
-    char data[11];
-    Data d = {0,0,0};
-    scanf("%10s", data);
+    //char data[11];
+    DataQuebrada d = {0,0,0};
     char temp[5];
-    i = 0;
-    j = 0;
+
+    while(data[i] != '/' && data[i] != '\0' && j < 4) { 
+        temp[j] = data[i];
+        j++;
+        i++;
+    }
+    temp[j] = '\0';
+    d.iDia = atoi(temp);
+
+    if(data[i] == '/') {
+        i++;
+    }
+
+    j= 0;
+    while(data[i] != '/' && data[i] != '\0' && j < 4) { 
+        temp[j] = data[i];
+        j++;
+        i++;
+    }
+    temp[j] = '\0';
+    d.iMes = atoi(temp);
+
+    if(data[i] == '/') {
+        i++;
+    }
+
+    j= 0;
+    while(data[i] != '\0' && j < 4) { 
+        temp[j] = data[i];
+        j++;
+        i++;
+    }
     
-    while(data[i] != '/' && data[i] != '\0') { 
-        temp[j] = data[i];
-        j++;
-        i++;
-    }
     temp[j] = '\0';
-    d.dia = atoi(temp);
-
-    if(data[i] == '/') {
-        i++;
+    d.iAno = atoi(temp);
+    
+    if (d.iAno >= 0 && d.iAno <= 99) {
+        d.iAno += 2000;
     }
-
-    j= 0;
-    while(data[i] != '/' && data[i] != '\0') { 
-        temp[j] = data[i];
-        j++;
-        i++;
+    
+    if(d.iAno < 1 || d.iAno > 9999) { 
+        datavalida = 0;
     }
-    temp[j] = '\0';
-    d.mes = atoi(temp);
-
-    if(data[i] == '/') {
-        i++;
+    
+    int diaMes;
+    if(d.iMes < 1 || d.iMes > 12) { 
+        datavalida = 0;
+    } else {  
+        switch(d.iMes) {
+            case 2:
+                if((d.iAno % 4 == 0 && d.iAno % 100 != 0) || (d.iAno % 400 == 0)) {
+                    diaMes = 29;
+                } else {
+                    diaMes = 28;
+                }
+            break;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                diaMes = 30;
+            break;
+            default:
+                diaMes = 31;
+            break;
+        }
+        if(d.iDia > diaMes || d.iDia < 1) {
+            datavalida = 0;   
+        }
     }
-
-    j= 0;
-    while(data[i] != '\0') { 
-        temp[j] = data[i];
-        j++;
-        i++;
-    }
-    temp[j] = '\0';
-    d.ano = atoi(temp);
-  //printf("%s\n", data);
 
     if (datavalida)
         return 1;
