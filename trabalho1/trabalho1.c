@@ -91,17 +91,60 @@ int teste(int a)
  */
 int q1(char data[])
 {
-  int datavalida = 1;
+    typedef struct {
+        int dia;
+        int mes; 
+        int ano;
+    } Data;
+    
+    int i, j;
+    int datavalida = 1;
+    char data[11];
+    Data d = {0,0,0};
+    scanf("%10s", data);
+    char temp[5];
+    i = 0;
+    j = 0;
+    
+    while(data[i] != '/' && data[i] != '\0') { 
+        temp[j] = data[i];
+        j++;
+        i++;
+    }
+    temp[j] = '\0';
+    d.dia = atoi(temp);
 
-  //quebrar a string data em strings sDia, sMes, sAno
+    if(data[i] == '/') {
+        i++;
+    }
 
+    j= 0;
+    while(data[i] != '/' && data[i] != '\0') { 
+        temp[j] = data[i];
+        j++;
+        i++;
+    }
+    temp[j] = '\0';
+    d.mes = atoi(temp);
 
+    if(data[i] == '/') {
+        i++;
+    }
+
+    j= 0;
+    while(data[i] != '\0') { 
+        temp[j] = data[i];
+        j++;
+        i++;
+    }
+    temp[j] = '\0';
+    d.ano = atoi(temp);
   //printf("%s\n", data);
 
-  if (datavalida)
-      return 1;
-  else
-      return 0;
+    if (datavalida)
+        return 1;
+    else
+        return 0;
 }
 
 
