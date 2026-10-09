@@ -109,7 +109,7 @@ int q1(char data[]) {
         i++;
     }
 
-    j= 0;
+    j = 0;
     while(data[i] != '/' && data[i] != '\0' && j < 4) { 
         temp[j] = data[i];
         j++;
@@ -203,6 +203,20 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
       return dma;
     }else{
       //verifique se a data final não é menor que a data inicial
+      int idataInicial = 0, idataFinal = 0;
+      int i = 0, j = 0;
+      char temp[11];
+
+      DataQuebrada dpInicial = quebraData(datainicial);
+      DataQuebrada dpFinal = quebraData(datafinal);
+
+      idataInicial =  (dpInicial.iAno * 1000000) + (dpInicial.iMes * 10000) + (dpInicial.iDia);
+      idataFinal =  (dpFinal.iAno * 1000000) + (dpFinal.iMes * 10000) + (dpFinal.iDia);
+      
+      if(idataInicial > idataFinal) {
+        dma.retorno = 4;
+        return dma;
+      }
       
       //calcule a distancia entre as datas
 
@@ -226,9 +240,39 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     Um número n >= 0.
  */
 int q3(char *texto, char c, int isCaseSensitive)
-{
-    int qtdOcorrencias = -1;
+{   
+    int qtdOcorrencias = -1, tam = 0, i = 0, j = 0;
+    char textoTemp[250];
+    while(texto[tam] != '\0') {
+        tam++;
+    }
 
+    while(i < tam) {
+        textoTemp[i] = texto[i];
+        i++;
+    }
+    textoTemp[i] = '\0';
+    //printf("Frase Antes: %s\n", texto);
+    if(isCaseSensitive != 1) {
+        i = 0;
+        if(c >= 'A' && c <= 'Z') {
+            c += 32;
+        }
+
+        while(i < tam) {
+            if(textoTemp[i] >= 'A' && textoTemp[i] <= 'Z') {
+                textoTemp[i] += 32;
+            }
+            i++;
+        }
+    }
+
+    qtdOcorrencias = 0;
+    for(i = 0; i < tam; i++) {
+        if(textoTemp[i] == c) {
+            qtdOcorrencias++;
+        }  
+    }
     return qtdOcorrencias;
 }
 
@@ -250,6 +294,58 @@ int q3(char *texto, char c, int isCaseSensitive)
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
     int qtdOcorrencias = -1;
+    int tamBusca = 0, tamTexto = 0, i = 0, j = 0, k = 0;
+    int inicial, final, pos = 0;
+    while(strBusca[tamBusca] != '\0'){
+        tamBusca++;
+    }
+
+    while(strTexto[tamTexto] != '\0'){
+        tamTexto++;
+    }
+
+    if (tamBusca == 0 || tamBusca > tamTexto) {
+        return 0;
+    }
+
+    qtdOcorrencias = 0;
+    int limite = tamTexto - tamBusca + 1;
+    int charCount = 1;
+
+    while(strTexto[i] != '\0' && i < limite) {
+        
+        if ((unsigned char)strTexto[i] < 0x80 || (unsigned char)strTexto[i] >= 0xC0) {
+            
+            j = i;
+            k = 0;
+            int invalido = 0;
+
+            while(k < tamBusca) { 
+                if(strTexto[j] != strBusca[k]) {
+                    invalido = 1;
+                }
+                if(k == 0) {
+                    inicial = charCount; 
+                }
+                if(k == (tamBusca - 1)) {
+                    final = charCount + tamBusca - 1; 
+                }
+                k++;
+                j++;
+            }
+
+            if(invalido == 0) {
+                posicoes[pos] = inicial;
+                pos++;
+                posicoes[pos] = final;
+                pos++;
+                qtdOcorrencias++;
+            }
+            
+            charCount++;
+        }
+        i++;
+    }
 
     return qtdOcorrencias;
 }
@@ -264,9 +360,17 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
     Número invertido
  */
 
-int q5(int num)
-{
+int q5(int num) {
+    int i = 0;
+    int resto, inverso = 0;
 
+    while(num != 0) {
+        resto = num % 10;
+        inverso = inverso * 10 + resto;
+        num /= 10;
+    }
+
+    num = inverso;
     return num;
 }
 
@@ -282,7 +386,25 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
+    int qtdOcorrencias = 0;
+
+
+    
+    /*
+    
+    int i = 0;
+    int num, resto;
+
+    num = numerobase;
+
+    while(numerobase != 0) {
+        resto = num % 10;
+        num /= 10;
+        if(resto == numerobusca) {
+            qtdOcorrencias++;
+        }
+    }
+    */
     return qtdOcorrencias;
 }
 
@@ -298,8 +420,112 @@ int q6(int numerobase, int numerobusca)
 
  int q7(char matriz[8][10], char palavra[5])
  {
-     int achou;
-     return achou;
+    int achou, falhou = 1;
+    int i = 0, j = 0, tam = 0;
+
+    while(palalvra[tam] != '\0') {
+        tam++;
+    }
+    
+    //horizontal de frente para trás
+    for(i = 0; i < 8; i++) {
+        for(j = 0; j < 10; j++) {
+            falhou = 1;
+            for(k = j; k < tam + j; k++) {
+                if(matriz[i][j] != palavra[k]) { 
+                    falhou = 0;
+                }
+            }
+            if(!falhou) {
+                achou = 1;
+            }
+        }    
+    }
+
+    //horizontal de trás para frente
+    for(i = 0; i < 8; i--) {
+        for(j = 0; j < 10; j--) {
+            falhou = 1;
+            for(k = j; k < tam + j; k++) {
+                if(matriz[i][j] != palavra[k]) { 
+                    falhou = 0;
+                }
+            }
+            if(!falhou) {
+                achou = 1;
+            }
+        }    
+    }
+
+    //vertical de cima para baixo
+    if(!achou) {
+        for(i = 0; i < 10; i++) {
+            for(j = 0; j < 8; j++) {
+                falhou = 1;
+                for(k = j; k < tam + j; k++) {
+                    if(matriz[j][i] != palavra[k]) { 
+                        falhou = 0;
+                    }
+                }
+                if(!falhou) {
+                    achou = 1;
+                }
+            }    
+        }
+    }
+
+    //vertical de baixo para cima
+    if(!achou) {
+        for(i = 0; i < 10; i++) {
+            for(j = 0; j < 8; j++) {
+                falhou = 1;
+                for(k = j; k < tam + j; k++) {
+                    if(matriz[j][i] != palavra[k]) { 
+                        falhou = 0;
+                    }
+                }
+                if(!falhou) {
+                    achou = 1;
+                }
+            }    
+        }
+    }
+
+    //diagonal para cima
+    if(!achou) {
+        for(i = 0; i < 10; i++) {
+            for(j = 0; j < 8; j++) {
+                falhou = 1;
+                for(k = j; k < tam + j; k++) {
+                    if(matriz[j][i] != palavra[k]) { 
+                        falhou = 0;
+                    }
+                }
+                if(!falhou) {
+                    achou = 1;
+                }
+            }    
+        }
+    }
+
+    //diagonal para cima
+    if(!achou) {
+        for(i = 0; i < 10; i++) {
+            for(j = 0; j < 8; j++) {
+                falhou = 1;
+                for(k = j; k < tam + j; k++) {
+                    if(matriz[j][i] != palavra[k]) { 
+                        falhou = 0;
+                    }
+                }
+                if(!falhou) {
+                    achou = 1;
+                }
+            }    
+        }
+    }
+    
+    return achou;
  }
 
 
