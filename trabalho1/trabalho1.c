@@ -386,25 +386,30 @@ int q5(int num) {
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias = 0;
+    int qtdOcorrencias = 0, mult = 1;
+    int temp, resto;
 
-
+    temp = numerobusca;
+    while(temp != 0) {
+        mult *= 10;
+        temp /= 10;
+    }
     
-    /*
-    
-    int i = 0;
-    int num, resto;
+    if (numerobusca == 0) {
+        mult = 10;
+    }
 
-    num = numerobase;
-
-    while(numerobase != 0) {
-        resto = num % 10;
-        num /= 10;
+    temp = numerobase;
+    while(temp != 0) { 
+        resto = temp % mult;
         if(resto == numerobusca) {
             qtdOcorrencias++;
+            temp /= mult;
+        } else { 
+            temp /= 10;
         }
     }
-    */
+
     return qtdOcorrencias;
 }
 
@@ -420,108 +425,44 @@ int q6(int numerobase, int numerobusca)
 
  int q7(char matriz[8][10], char palavra[5])
  {
-    int achou, falhou = 1;
-    int i = 0, j = 0, tam = 0;
+    int tamBusca = 0, achou = 0;
 
-    while(palalvra[tam] != '\0') {
-        tam++;
+    while (palavra[tamBusca] != '\0') {
+        tamBusca++;
     }
     
-    //horizontal de frente para trás
-    for(i = 0; i < 8; i++) {
-        for(j = 0; j < 10; j++) {
-            falhou = 1;
-            for(k = j; k < tam + j; k++) {
-                if(matriz[i][j] != palavra[k]) { 
-                    falhou = 0;
-                }
-            }
-            if(!falhou) {
-                achou = 1;
-            }
-        }    
-    }
+    int direcaoH[] = {0,  0,  1, -1,  1,  1, -1, -1};
+    int direcaoV[] = {1, -1,  0,  0,  1, -1,  1, -1};
+    
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 10; j++) {
+            
+            if (matriz[i][j] == palavra[0]) {
+                
+                for (int d = 0; d < 8; d++) {
+                    int k;
+                    int h = i;
+                    int v = j;
+                    int achouDirecao = 1;
 
-    //horizontal de trás para frente
-    for(i = 0; i < 8; i--) {
-        for(j = 0; j < 10; j--) {
-            falhou = 1;
-            for(k = j; k < tam + j; k++) {
-                if(matriz[i][j] != palavra[k]) { 
-                    falhou = 0;
-                }
-            }
-            if(!falhou) {
-                achou = 1;
-            }
-        }    
-    }
+                    for (k = 0; k < tamBusca; k++) {
+                        if (h < 0 || h >= 8 || v < 0 || v >= 10) {
+                            achouDirecao = 0;
+                            break;
+                        }
+                        if (matriz[h][v] != palavra[k]) {
+                            achouDirecao = 0;
+                            break;
+                        }
+                        h += direcaoH[d];
+                        v += direcaoV[d];
+                    }
 
-    //vertical de cima para baixo
-    if(!achou) {
-        for(i = 0; i < 10; i++) {
-            for(j = 0; j < 8; j++) {
-                falhou = 1;
-                for(k = j; k < tam + j; k++) {
-                    if(matriz[j][i] != palavra[k]) { 
-                        falhou = 0;
+                    if (achouDirecao) {
+                        achou = 1; 
                     }
                 }
-                if(!falhou) {
-                    achou = 1;
-                }
-            }    
-        }
-    }
-
-    //vertical de baixo para cima
-    if(!achou) {
-        for(i = 0; i < 10; i++) {
-            for(j = 0; j < 8; j++) {
-                falhou = 1;
-                for(k = j; k < tam + j; k++) {
-                    if(matriz[j][i] != palavra[k]) { 
-                        falhou = 0;
-                    }
-                }
-                if(!falhou) {
-                    achou = 1;
-                }
-            }    
-        }
-    }
-
-    //diagonal para cima
-    if(!achou) {
-        for(i = 0; i < 10; i++) {
-            for(j = 0; j < 8; j++) {
-                falhou = 1;
-                for(k = j; k < tam + j; k++) {
-                    if(matriz[j][i] != palavra[k]) { 
-                        falhou = 0;
-                    }
-                }
-                if(!falhou) {
-                    achou = 1;
-                }
-            }    
-        }
-    }
-
-    //diagonal para cima
-    if(!achou) {
-        for(i = 0; i < 10; i++) {
-            for(j = 0; j < 8; j++) {
-                falhou = 1;
-                for(k = j; k < tam + j; k++) {
-                    if(matriz[j][i] != palavra[k]) { 
-                        falhou = 0;
-                    }
-                }
-                if(!falhou) {
-                    achou = 1;
-                }
-            }    
+            }
         }
     }
     
