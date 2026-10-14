@@ -20,9 +20,8 @@
 //renomeie o arquivo do include abaixo para trabalho1.h
 #include "WilliamNunes-T1.h"
 
-/*void testSomar();    //função utilizada para testes
+void testSomar();    //função utilizada para testes
 void testFatorial(); //função utilizada para testes
-*/
 void testQ1();
 void testQ2();
 void testQ3();
