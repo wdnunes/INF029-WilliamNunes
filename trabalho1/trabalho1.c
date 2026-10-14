@@ -212,16 +212,57 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
 
       idataInicial =  (dpInicial.iAno * 1000000) + (dpInicial.iMes * 10000) + (dpInicial.iDia);
       idataFinal =  (dpFinal.iAno * 1000000) + (dpFinal.iMes * 10000) + (dpFinal.iDia);
-      
+
       if(idataInicial > idataFinal) {
         dma.retorno = 4;
         return dma;
       }
-      
-      //calcule a distancia entre as datas
 
+      int anos = dpFinal.iAno - dpInicial.iAno;
+      int meses = dpFinal.iMes - dpInicial.iMes;
+      int dias = dpFinal.iDia - dpInicial.iDia;
 
-      //se tudo der certo
+      if (dias < 0) {
+          meses--;
+          int mesAnterior = dpFinal.iMes - 1;
+          int anoAnterior = dpFinal.iAno;
+          
+          if (mesAnterior < 1) {
+              mesAnterior = 12;
+              anoAnterior--;
+          }
+
+          int diasMesAnt;
+          switch(mesAnterior) {
+              case 2:
+                  if ((anoAnterior % 4 == 0 && anoAnterior % 100 != 0) || (anoAnterior % 400 == 0)) {
+                      diasMesAnt = 29;
+                  } else {
+                      diasMesAnt = 28;
+                  }
+                  break;
+              case 4:
+              case 6:
+              case 9:
+              case 11:
+                  diasMesAnt = 30;
+                  break;
+              default:
+                  diasMesAnt = 31;
+                  break;
+          }
+          dias += diasMesAnt;
+      }
+
+      if (meses < 0) {
+          anos--;
+          meses += 12;
+      }
+
+      dma.qtdAnos = anos;
+      dma.qtdMeses = meses;
+      dma.qtdDias = dias;
+
       dma.retorno = 1;
       return dma;
       
