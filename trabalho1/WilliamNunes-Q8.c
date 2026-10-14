@@ -16,14 +16,14 @@ int main() {
         exibirTabuleiro(tabuleiro);
         
         int jogadaValida = 0;
-        char linhaChar;
+        char linha;
         int coluna;
         int i = -1, j = -1;
         
         while (!jogadaValida) {
             printf("Jogador %d, informe sua jogada: ", jogador);
             
-            if (scanf("%c %d", &linhaChar, &coluna) != 2) {
+            if (scanf("%c %d", &linha, &coluna) != 2) {
                 printf("Jogada invalida!\n");
                 while (getchar() != '\n');
                 continue;
@@ -31,11 +31,11 @@ int main() {
             
             while (getchar() != '\n');
             
-            if (linhaChar == 'A' || linhaChar == 'a') {
+            if (linha == 'A' || linha == 'a') {
                 i = 0;
-            } else if (linhaChar == 'B' || linhaChar == 'b') {
+            } else if (linha == 'B' || linha == 'b') {
                 i = 1;
-            } else if (linhaChar == 'C' || linhaChar == 'c') {
+            } else if (linha == 'C' || linha == 'c') {
                 i = 2;
             } else {
                 i = -1;
