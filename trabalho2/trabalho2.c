@@ -235,8 +235,7 @@ Rertono (int)
     SEM_ESTRUTURA_AUXILIAR - Não tem estrutura auxiliar
     POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
 */
-int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
-{
+int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[]) {
 	
     int retorno = 0;
 
@@ -246,13 +245,14 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
         retorno = SEM_ESTRUTURA_AUXILIAR;
     } else {
 	int qtd = vetorPrincipal[posicao - 1].qtd;
-	
+	int aux;
+		
 	for (int i = 0; i < qtd; i++) {
             vetorAux[i] = vetorPrincipal[posicao - 1].dados[i];
         }
-
+		
         for (int i = 0; i < qtd; i++) {
-            for (j = i + 1; j < qtd; j++) {
+            for (int j = i + 1; j < qtd; j++) {
             	if(vetorAux[i] > vetorAux[j]) {
                     aux = vetorAux[i];
                     vetorAux[i] = vetorAux[j];
@@ -371,7 +371,6 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
         int tamanhoAtual = vetorPrincipal[posicao - 1].tamanho;
         int novoTamanhoTotal = tamanhoAtual + novoTamanho;
 
-        
         if (novoTamanhoTotal < 1) {
             retorno = NOVO_TAMANHO_INVALIDO;
         } 
@@ -439,26 +438,22 @@ No *montarListaEncadeadaComCabecote() {
     }
     inicio->prox = NULL;
 
-    int quantidadeTotalElementos = getQuantidadeTotalElementos();
-
-    if (quantidadeTotalElementos == 0) {
-        return inicio;
-    }
-
-    int vetorTemp[quantidadeTotalElementos];
-    getDadosDeTodasEstruturasAuxiliares(vetorTemp);
-
     No *atual = inicio;
-    for (int i = 0; i < quantidadeTotalElementos; i++) {
-        No *novoNo = (No*) malloc(sizeof(No));
-        if (novoNo == NULL) {
-            return NULL;
-        }
-        novoNo->conteudo = vetorTemp[i];
-        novoNo->prox = NULL;
+    for (int i = 0; i < TAM; i++) {
+        if (vetorPrincipal[i].dados != NULL && vetorPrincipal[i].qtd > 0) {
+            for (int j = 0; j < vetorPrincipal[i].qtd; j++) {
+                No *novo = (No*) malloc(sizeof(No));
+                if (novo == NULL) {
+                    return NULL;
+                }
+                
+                novo->conteudo = vetorPrincipal[i].dados[j];
+                novo->prox = NULL;
 
-        atual->prox = novoNo;
-        atual = novoNo;
+                atual->prox = novo;
+                atual = novo;
+            }
+        }
     }
 
     return inicio;
