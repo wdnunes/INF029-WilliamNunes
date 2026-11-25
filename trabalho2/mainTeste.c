@@ -250,7 +250,7 @@ void testeMudarTamanhoEstrutura()
     printf("%d\n", inserirNumeroEmEstrutura(2, -2) == SUCESSO);
     printf("%d\n", inserirNumeroEmEstrutura(2, 6) == SUCESSO);
     printf("%d\n", inserirNumeroEmEstrutura(2, 5) == SEM_ESPACO);
-}/var/cache/pacman/pkg/download-WxgiWJ
+}
 
 /*
 2 [3,4,-2,6]
